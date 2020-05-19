@@ -1,0 +1,8 @@
+repository: CSSSR/project
+branch: master
+projectID: project
+releaseID: master
+buildID: master-78043612972693f314034abcab4b133685638909
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 100M

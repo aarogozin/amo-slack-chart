@@ -1,0 +1,12 @@
+repository: CSSSR/project
+branch: PROJECT-123
+projectID: project
+releaseID: project-123
+sha: 78043612972693f314034abcab4b133685638909
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 1
+    memory: 256Mi

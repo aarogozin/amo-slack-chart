@@ -1,0 +1,6 @@
+dependencies:
+- name: common-utils
+  repository: https://helm-registry.csssr.cloud
+  version: 1.0.7
+digest: sha256:dd02e9cd97b89e6c36d9c21ba8216a8c15b939413ea99d969130ca3c66f6147a
+generated: "2020-04-30T11:19:49.995355+03:00"

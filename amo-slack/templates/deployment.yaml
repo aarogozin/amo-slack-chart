@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.projectID }}
+    release: {{ .Release.Name }}
+  name: {{ .Release.Name }}-{{ .Values.projectID }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.projectID }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.projectID }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Values.projectID }}
+        {{- $registry := .Values.image.registry | default "registry.csssr.cloud" }}
+        {{- $repository := .Values.image.repository | default .Values.projectID }}
+        {{- $tag := .Values.image.tag | default .Values.buildID | default .Values.sha }}
+        image: {{ $registry }}/{{ $repository }}:{{ $tag }}
+        env:
+        - name: PORT
+          value: {{ .Values.port | quote }}
+        - name: AMO_CRM_SALES_USER_LOGIN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-amo-slack
+              key: crmLogin
+        - name: AMO_CRM_SALES_USER_HASH
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-amo-slack
+              key: crmHash
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-amo-slack
+              key: slackWebhook
+        ports:
+        - name: http
+          containerPort: {{ .Values.port | required ".Values.port is required" }}
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: http
+            scheme: HTTP
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: http
+            scheme: HTTP
+        {{- if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
+      imagePullSecrets:
+      - name: cloud-registry-secret-{{ .Release.Name }}

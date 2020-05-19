@@ -1,0 +1,8 @@
+repository: CSSSR/project
+branch: release/crazy-frog
+projectID: project
+releaseID: release-crazy-frog
+image:
+  registry: registry.csssr.cloud
+  repository: custom-image
+  tag: custom-tag

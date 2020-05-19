@@ -1,0 +1,6 @@
+simple-webapp:
+    amo: 
+        environment: testing
+        port: 3210
+        image: {}
+        ingress: {}
